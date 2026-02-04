@@ -12,6 +12,7 @@
     "start:dev": "nodemon --exec \"serverless offline start\"",
     "test:coverage": "NODE_ENV=test & jest -i --silent --coverage",
     "test:local": "jest -i --coverage",
+    "ddb:create": "npx ts-node cd_script/create-dynamodb.ts",
     "build": "tsc",
     "offline": "npm run build && serverless offline",
     "deploy": "npm run build && serverless deploy"
@@ -20,6 +21,8 @@
   "author": "Denmark",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.982.0",
+    "@aws-sdk/lib-dynamodb": "^3.982.0",
     "axios": "^1.6.0",
     "http-status": "^1.5.3",
     "joi": "^17.3.0",

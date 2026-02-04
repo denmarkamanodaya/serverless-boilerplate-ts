@@ -6,6 +6,11 @@ custom:
   serverless-layers:
     dependenciesPath: ./package.json
     layersDeploymentBucket: ${self:custom.common.artifactBucket}
+  serverless-dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true # auto-create tables
 
 provider:
   name: aws
@@ -37,7 +42,10 @@ provider:
     AWS_SECRETS_MANAGER_REGION: ${env:AWS_SECRETS_MANAGER_REGION, 'ap-southeast-1'}
     AWS_SECRETS_MANAGER_TIMEOUT: ${env:AWS_SECRETS_MANAGER_TIMEOUT, '2000'}
 
-    TEST_AXIOS_URL: "https://jsonplaceholder.typicode.com/"
+    TEST_AXIOS_ENDPOINT: "https://jsonplaceholder.typicode.com"
+    
+    DYNAMODB_ENDPOINT: "http://localhost:8000"
+    DYNAMODB_TABLE_NAME: "MyTable"
 
   # tags:
   #   Portfolio: 'Security'

@@ -14,3 +14,10 @@ test-v2:
         method: GET
         cors: true
 
+test-v3:
+  handler: .build/handlers/test/v3.handler
+  events:
+    - http:
+        path: /v3/test
+        method: POST
+        cors: true

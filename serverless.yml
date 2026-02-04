@@ -37,6 +37,8 @@ provider:
     AWS_SECRETS_MANAGER_REGION: ${env:AWS_SECRETS_MANAGER_REGION, 'ap-southeast-1'}
     AWS_SECRETS_MANAGER_TIMEOUT: ${env:AWS_SECRETS_MANAGER_TIMEOUT, '2000'}
 
+    TEST_AXIOS_URL: "https://jsonplaceholder.typicode.com/"
+
   # tags:
   #   Portfolio: 'Security'
   #   Project: 'IAM'

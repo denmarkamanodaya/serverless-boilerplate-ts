@@ -12,7 +12,6 @@
     "start:dev": "nodemon --exec \"serverless offline start\"",
     "test:coverage": "NODE_ENV=test & jest -i --silent --coverage",
     "test:local": "jest -i --coverage",
-    
     "build": "tsc",
     "offline": "npm run build && serverless offline",
     "deploy": "npm run build && serverless deploy"
@@ -21,12 +20,14 @@
   "author": "Denmark",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.6.0",
     "http-status": "^1.5.3",
     "joi": "^17.3.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.160",
+    "@types/axios": "^0.14.4",
     "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",

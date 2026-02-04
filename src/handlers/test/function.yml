@@ -1,8 +1,16 @@
-login-v1:
+test-v1:
   handler: .build/handlers/test/v1.handler
   events:
     - http:
-        path: /v1/login
+        path: /v1/test
         method: POST
+        cors: true
+
+test-v2:
+  handler: .build/handlers/test/v2.handler
+  events:
+    - http:
+        path: /v2/test
+        method: GET
         cors: true
 

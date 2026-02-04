@@ -1,0 +1,8 @@
+login-v1:
+  handler: .build/handlers/test/v1.handler
+  events:
+    - http:
+        path: /v1/login
+        method: POST
+        cors: true
+

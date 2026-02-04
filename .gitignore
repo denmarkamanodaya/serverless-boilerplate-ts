@@ -147,3 +147,6 @@ swagger/
 # End of https://www.toptal.com/developers/gitignore/api/node
 
 tests/test.sqlite
+
+# Remove Typescript builds
+.build

@@ -1,7 +1,7 @@
 # Serverless Boilerplate TS
 
 ## Pre-requisites
-1. Node version 17 (hard requirement)
+1. Node version 18 (hard requirement)
 
 ## Installation
 1. ```npm install```

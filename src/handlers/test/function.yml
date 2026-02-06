@@ -1,23 +1,20 @@
 test-v1:
   handler: .build/handlers/test/v1.handler
   events:
-    - http:
+    - httpApi:
         path: /v1/test
         method: GET
-        cors: true
 
 test-v2:
   handler: .build/handlers/test/v2.handler
   events:
-    - http:
+    - httpApi:
         path: /v2/test
         method: GET
-        cors: true
 
 test-v3:
   handler: .build/handlers/test/v3.handler
   events:
-    - http:
+    - httpApi:
         path: /v3/test
         method: POST
-        cors: true

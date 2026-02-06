@@ -1,4 +1,6 @@
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
+import { ResponseMessage } from '../common/response.interface';
+import HttpStatus from 'http-status';
 
 export type AsyncAPIGatewayHandler = (
   event: APIGatewayProxyEvent & { body: any }, // allow parsed body
@@ -28,10 +30,9 @@ export const withMiddleware =
       // Pass modified event to handler
       return handler({ ...event, body: parsedBody } as TEvent & { body: any }, context);
     } catch (err) {
-      console.error('JSON parsing error', err);
       return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Invalid JSON body' }),
+        statusCode: HttpStatus.BAD_REQUEST,
+        body: JSON.stringify({ message: ResponseMessage.INVALID_JSON_BODY }),
       } as TResult;
     }
   };

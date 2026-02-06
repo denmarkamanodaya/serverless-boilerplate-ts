@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import { RequestBody } from '../common/request.interface';
+import { ResponseMessage } from '../common/response.interface';
 
 export const jsonBodyMiddleware =
   (handler: (event: any, context: any) => Promise<any>) => async (event: any, context: any) => {
@@ -21,10 +22,9 @@ export const jsonBodyMiddleware =
       // Pass the parsed body to the handler
       return handler({ ...event, body: parsedBody }, context);
     } catch (error) {
-      console.error('Invalid JSON body', error);
       return {
         statusCode: httpStatus.BAD_REQUEST,
-        body: JSON.stringify({ message: 'Invalid JSON body' }),
+        body: JSON.stringify({ message: ResponseMessage.INVALID_JSON_BODY }),
       };
     }
   };

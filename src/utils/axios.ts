@@ -1,5 +1,7 @@
 // apiFactory.ts
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
+import httpStatus from 'http-status';
+import { ResponseMessage } from '../common/response.interface';
 
 export interface RequestOptions<B = any> {
   url: string;
@@ -39,7 +41,6 @@ export function createApi({ baseURL, defaultHeaders, onRefreshToken }: ApiFactor
       const token = await onRefreshToken();
       if (token) config.headers.set('Authorization', `Bearer ${token}`);
     }
-    console.log(`[API REQUEST] ${config.method?.toUpperCase()} ${config.url}`);
     return config;
   });
 
@@ -49,7 +50,7 @@ export function createApi({ baseURL, defaultHeaders, onRefreshToken }: ApiFactor
     (error) => {
       // Always reject so we handle it in our wrapper
       return Promise.reject(error);
-    }
+    },
   );
 
   // Generic request helper
@@ -76,9 +77,9 @@ export function createApi({ baseURL, defaultHeaders, onRefreshToken }: ApiFactor
       };
     } catch (err: any) {
       // Catch all errors and return typed ApiResponse
-      const status = err.response?.status || 500;
-      const statusText = err.response?.statusText || 'Internal Server Error';
-      const errorMessage = err.response?.data?.message || err.message || 'Unknown Error';
+      const status = err.response?.status || httpStatus.INTERNAL_SERVER_ERROR;
+      const statusText = err.response?.statusText || ResponseMessage.INTERNAL_SERVER_ERROR;
+      const errorMessage = err.response?.data?.message || err.message || ResponseMessage.INTERNAL_SERVER_ERROR;
 
       return {
         data: null,

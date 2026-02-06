@@ -1,3 +1,7 @@
-export enum AxiosResponseMessage {
-    'SUCCESS' = "SUCCESS"
+export enum ResponseMessage {
+  'SUCCESS' = 'SUCCESS',
+  'UNAUTHORIZED' = 'UNAUTHORIZED',
+  'INVALID_JSON_BODY' = 'INVALID_JSON_BODY',
+  'INTERNAL_SERVER_ERROR' = 'INTERNAL_SERVER_ERROR',
+  'INVALID_TOKEN' = 'INVALID_TOKEN',
 }

@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import { handler } from '../../../../src/handlers/test/v3';
 import { createApi } from '../../../../src/utils/axios';
 import { ddbDocClient } from '../../../../src/models/dynamodb';
-import { AxiosResponseMessage } from '../../../../src/common/response.interface';
+import { ResponseMessage } from '../../../../src/common/response.interface';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import { v4 as uuid } from 'uuid';
@@ -115,7 +115,7 @@ describe('handler – 100% coverage', () => {
     // final response
     expect(result.statusCode).toBe(httpStatus.OK);
     expect(JSON.parse(result.body)).toEqual({
-      data: AxiosResponseMessage.SUCCESS,
+      data: ResponseMessage.SUCCESS,
     });
   });
 

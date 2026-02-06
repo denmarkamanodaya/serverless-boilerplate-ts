@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import { AsyncAPIGatewayHandler } from '../../common/types';
 import { withMiddleware } from '../../middlewares/index';
 import { RequestBody } from '../../common/request.interface';
-import { AxiosResponseMessage } from '../../common/response.interface';
+import { ResponseMessage } from '../../common/response.interface';
 import { v4 as uuid } from 'uuid';
 import { ddbDocClient } from '../../models/dynamodb';
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
@@ -42,7 +42,7 @@ export const handler: AsyncAPIGatewayHandler = withMiddleware(async (event) => {
   return {
     statusCode: httpStatus.OK,
     body: JSON.stringify({
-      data: AxiosResponseMessage.SUCCESS,
+      data: ResponseMessage.SUCCESS,
     }),
   };
 });

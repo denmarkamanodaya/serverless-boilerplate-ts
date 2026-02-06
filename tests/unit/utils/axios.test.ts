@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { createApi } from '../../../src/utils/axios';
+import { ResponseMessage } from '../../../src/common/response.interface';
+import httpStatus from 'http-status';
 
 jest.mock('axios');
 
@@ -92,8 +94,8 @@ describe('createApi', () => {
   it('handles successful request', async () => {
     mockAxiosInstance.request.mockResolvedValue({
       data: { id: 1 },
-      status: 200,
-      statusText: 'OK',
+      status: httpStatus.OK,
+      statusText: ResponseMessage.SUCCESS,
     });
 
     const api = createApi({ baseURL: '' });
@@ -102,17 +104,17 @@ describe('createApi', () => {
 
     expect(result).toEqual({
       data: { id: 1 },
-      status: 200,
-      statusText: 'OK',
+      status: httpStatus.OK,
+      statusText: ResponseMessage.SUCCESS,
     });
   });
 
   it('handles error with response object', async () => {
     mockAxiosInstance.request.mockRejectedValue({
       response: {
-        status: 401,
-        statusText: 'Unauthorized',
-        data: { message: 'Invalid token' },
+        status: httpStatus.UNAUTHORIZED,
+        statusText: ResponseMessage.UNAUTHORIZED,
+        data: { message: ResponseMessage.INVALID_TOKEN },
       },
     });
 
@@ -122,14 +124,14 @@ describe('createApi', () => {
 
     expect(result).toEqual({
       data: null,
-      status: 401,
-      statusText: 'Unauthorized',
-      error: 'Invalid token',
+      status: httpStatus.UNAUTHORIZED,
+      statusText: ResponseMessage.UNAUTHORIZED,
+      error: ResponseMessage.INVALID_TOKEN,
     });
   });
 
   it('handles error without response object', async () => {
-    mockAxiosInstance.request.mockRejectedValue(new Error('Network error'));
+    mockAxiosInstance.request.mockRejectedValue(new Error(ResponseMessage.INTERNAL_SERVER_ERROR));
 
     const api = createApi({ baseURL: '' });
 
@@ -137,17 +139,17 @@ describe('createApi', () => {
 
     expect(result).toEqual({
       data: null,
-      status: 500,
-      statusText: 'Internal Server Error',
-      error: 'Network error',
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      statusText: ResponseMessage.INTERNAL_SERVER_ERROR,
+      error: ResponseMessage.INTERNAL_SERVER_ERROR,
     });
   });
 
   it('covers shortcut methods', async () => {
     mockAxiosInstance.request.mockResolvedValue({
       data: {},
-      status: 200,
-      statusText: 'OK',
+      status: httpStatus.OK,
+      statusText: ResponseMessage.SUCCESS,
     });
 
     const api = createApi({ baseURL: '' });
@@ -170,9 +172,9 @@ describe('createApi', () => {
 
     expect(result).toEqual({
       data: null,
-      status: 500,
-      statusText: 'Internal Server Error',
-      error: 'Unknown Error',
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      statusText: ResponseMessage.INTERNAL_SERVER_ERROR,
+      error: ResponseMessage.INTERNAL_SERVER_ERROR,
     });
   });
 });

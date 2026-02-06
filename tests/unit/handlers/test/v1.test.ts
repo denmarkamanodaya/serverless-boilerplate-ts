@@ -2,6 +2,7 @@ import { handler } from '../../../../src/handlers/test/v1';
 import { Context } from 'aws-lambda';
 import httpStatus from 'http-status';
 import { makeEvent, validPayload, objectPayload, invalidPayload, validResponse } from '../../../fixtures/test.fixtures';
+import { ResponseMessage } from '../../../../src/common/response.interface';
 
 describe('Lambda handler', () => {
   const context: Context = {} as Context;
@@ -33,6 +34,6 @@ describe('Lambda handler', () => {
     const result = await handler(request, context);
 
     expect(result.statusCode).toBe(httpStatus.BAD_REQUEST);
-    expect(JSON.parse(result.body)).toEqual({ message: 'Invalid JSON body' });
+    expect(JSON.parse(result.body)).toEqual({ message: ResponseMessage.INVALID_JSON_BODY });
   });
 });

@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import { jsonBodyMiddleware } from '../../../src/middlewares/body-parser.middleware';
+import { ResponseMessage } from '../../../src/common/response.interface';
 
 describe('jsonBodyMiddleware', () => {
   const context = {};
@@ -67,7 +68,7 @@ describe('jsonBodyMiddleware', () => {
     expect(handler).not.toHaveBeenCalled();
     expect(result).toEqual({
       statusCode: httpStatus.BAD_REQUEST,
-      body: JSON.stringify({ message: 'Invalid JSON body' }),
+      body: JSON.stringify({ message: ResponseMessage.INVALID_JSON_BODY }),
     });
   });
 });

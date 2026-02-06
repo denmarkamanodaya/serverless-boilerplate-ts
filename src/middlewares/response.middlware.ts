@@ -1,6 +1,7 @@
 import { Middleware } from '../common/types';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import httpStatus from 'http-status';
+import { ResponseMessage } from '../common/response.interface';
 
 export const responseMiddleware: Middleware = (handler) => {
   return async (event, context) => {
@@ -27,7 +28,7 @@ export const responseMiddleware: Middleware = (handler) => {
         statusCode: err.statusCode ?? httpStatus.INTERNAL_SERVER_ERROR,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          data: err.message ?? 'Internal Server Error',
+          data: err.message ?? ResponseMessage.INTERNAL_SERVER_ERROR,
         }),
       };
     }

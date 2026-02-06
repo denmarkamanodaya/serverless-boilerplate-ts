@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import { responseMiddleware } from '../../../src/middlewares/response.middlware';
+import { ResponseMessage } from '../../../src/common/response.interface';
 
 describe('responseMiddleware', () => {
   const event = {} as any;
@@ -47,7 +48,7 @@ describe('responseMiddleware', () => {
 
   it('handles thrown error with statusCode and message', async () => {
     const error = {
-      statusCode: 400,
+      statusCode: httpStatus.BAD_REQUEST,
       message: 'Bad request',
     };
 
@@ -57,7 +58,7 @@ describe('responseMiddleware', () => {
     const result = await middleware(event, context);
 
     expect(result).toEqual({
-      statusCode: 400,
+      statusCode: httpStatus.BAD_REQUEST,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         data: 'Bad request',
@@ -75,7 +76,7 @@ describe('responseMiddleware', () => {
       statusCode: httpStatus.INTERNAL_SERVER_ERROR,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        data: 'Internal Server Error',
+        data: ResponseMessage.INTERNAL_SERVER_ERROR,
       }),
     });
   });

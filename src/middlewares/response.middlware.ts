@@ -1,4 +1,4 @@
-import { Middleware } from './types';
+import { Middleware } from '../common/types';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import httpStatus from 'http-status';
 
@@ -13,10 +13,7 @@ export const responseMiddleware: Middleware = (handler) => {
           'Content-Type': 'application/json',
           ...result.headers,
         },
-        body:
-          typeof result.body === 'string'
-            ? result.body
-            : JSON.stringify(result.body),
+        body: typeof result.body === 'string' ? result.body : JSON.stringify(result.body),
         isBase64Encoded: result.isBase64Encoded ?? false,
       };
 

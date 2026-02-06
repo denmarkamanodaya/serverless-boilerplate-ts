@@ -7,12 +7,12 @@ async function createTable() {
       new CreateTableCommand({
         TableName: "MyTable",
         AttributeDefinitions: [
-          { AttributeName: "userId", AttributeType: "N" }, // STRING
-          { AttributeName: "id", AttributeType: "N" }      // STRING
+          { AttributeName: "taskId", AttributeType: "S" }, // STRING
+          { AttributeName: "title", AttributeType: "S" },      // STRING
         ],
         KeySchema: [
-          { AttributeName: "userId", KeyType: "HASH" },
-          { AttributeName: "id", KeyType: "RANGE" }
+          { AttributeName: "taskId", KeyType: "HASH" },
+          { AttributeName: "title", KeyType: "RANGE" },
         ],
         ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 }
       })

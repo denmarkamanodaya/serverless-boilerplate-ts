@@ -1,18 +1,11 @@
-require('dotenv').config();
+const { createDefaultPreset } = require('ts-jest');
+
+const tsJestTransformCfg = createDefaultPreset().transform;
+
+/** @type {import("jest").Config} **/
 module.exports = {
   testEnvironment: 'node',
-  testEnvironmentOptions: {
-    NODE_ENV: process.env.NODE_ENV || 'test',
+  transform: {
+    ...tsJestTransformCfg,
   },
-  testTimeout: 15000,
-  restoreMocks: true,
-  coveragePathIgnorePatterns: [
-    'node_modules',
-    'database',
-    'src/utils/custom-errors/class-errors.js',
-    'src/common/logger.js',
-    'tests',
-  ],
-  coverageReporters: ['text', 'lcov', 'clover', 'html'],
-  verbose: true,
 };

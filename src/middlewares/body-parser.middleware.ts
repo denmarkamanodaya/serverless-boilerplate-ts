@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import { RequestBody } from '../common/request.interface';
 
-export const jsonBodyMiddleware = (handler: (event: any, context: any) => Promise<any>) => {
-  return async (event: any, context: any) => {
+export const jsonBodyMiddleware =
+  (handler: (event: any, context: any) => Promise<any>) => async (event: any, context: any) => {
     try {
       // Parse event.body to an object if it's a string, or set to empty object if undefined
       let parsedBody: any;
@@ -28,4 +28,3 @@ export const jsonBodyMiddleware = (handler: (event: any, context: any) => Promis
       };
     }
   };
-};

@@ -3,7 +3,7 @@ test-v1:
   events:
     - http:
         path: /v1/test
-        method: POST
+        method: GET
         cors: true
 
 test-v2:

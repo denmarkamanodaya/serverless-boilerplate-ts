@@ -10,8 +10,3 @@ custom:
     dev: 512
     uat: 512
     prod: 1024
-  artifactBucket: sbts-${self:custom.common.stage}-${self:custom.common.projectName}-layers-bucket
-  secretsManager:
-    dev: dev/sbts/iamkey
-    uat: uat/sbts/iamkey
-    prod: prod/sbts/iamkey

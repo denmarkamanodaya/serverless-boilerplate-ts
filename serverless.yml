@@ -1,57 +1,21 @@
 service: serverless-boilerplate-ts
 frameworkVersion: '3'
 
-custom:
-  common: ${file(./serverless.common.yml):custom}
-  serverless-layers:
-    dependenciesPath: ./package.json
-    layersDeploymentBucket: ${self:custom.common.artifactBucket}
-  serverless-dynamodb:
-    start:
-      port: 8000
-      inMemory: true
-      migrate: true # auto-create tables
-
 provider:
   name: aws
-  runtime: nodejs16.x
-  region: ap-southeast-1
+  runtime: nodejs18.x
+  region: us-east-1
   stage: ${env:ENV, 'dev'}
-  lambdaHashingVersion: 20201221
-  versionFunctions: false
-  logRetentionInDays: 90
-  deploymentBucket:
-    name: ${env:DEPLOYMENT_BUCKET, ''}
-    serverSideEncryption: aws:kms
-  iam:
-    deploymentRole: ${env:DEPLOYMENT_ROLE, ''}
-    role: ${env:EXECUTION_ROLE, ''}
-  vpc:
-    securityGroupIds:
-      - ${env:SECURITY_GROUP_ID, ''}
-    subnetIds:
-      - ${env:SUBNET_ID_A, ''}
-      - ${env:SUBNET_ID_B, ''}
+
   apiGateway:
     restApiId: ${env:API_GATEWAY_ID, ''}
     restApiRootResourceId: ${env:ROOT_RESOURCE_ID, ''}
-  timeout: 30
+
   environment:
     NODE_ENV: ${env:NODE_ENV, 'development'}
-    AWS_SECRETS_MANAGER_NAME: ${self:custom.common.secretsManager.${self:custom.common.stage}}
-    AWS_SECRETS_MANAGER_REGION: ${env:AWS_SECRETS_MANAGER_REGION, 'ap-southeast-1'}
-    AWS_SECRETS_MANAGER_TIMEOUT: ${env:AWS_SECRETS_MANAGER_TIMEOUT, '2000'}
-
-    TEST_AXIOS_ENDPOINT: "https://jsonplaceholder.typicode.com"
-    
-    DYNAMODB_ENDPOINT: "http://localhost:8000"
-    DYNAMODB_TABLE_NAME: "MyTable"
-
-  # tags:
-  #   Portfolio: 'Security'
-  #   Project: 'IAM'
-  #   Environment: ${self:custom.common.tagStage.${self:custom.common.stage}}
-  #   CostCenter: 'Technology'
+    TEST_AXIOS_ENDPOINT: 'https://jsonplaceholder.typicode.com'
+    DYNAMODB_ENDPOINT: 'http://localhost:8000'
+    DYNAMODB_TABLE_NAME: 'MyTable'
 
 package:
   exclude:
@@ -63,5 +27,18 @@ package:
 functions:
   - ${file(src/handlers/test/function.yml)}
 
-plugins: ${file(yml/plugins.yml):plugins}
-resources: ${file(yml/resources.yml)}
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,PUT,DELETE'"
+        ResponseType: DEFAULT_4XX
+        RestApiId: ${env:API_GATEWAY_ID, ''}

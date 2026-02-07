@@ -11,6 +11,7 @@ provider:
     id: ${env:API_GATEWAY_ID, ''}
 
   environment:
+    AWS_REGION: ${env:AWS_REGION, 'us-east-1'}
     NODE_ENV: ${env:NODE_ENV, 'development'}
     TEST_AXIOS_ENDPOINT: 'https://jsonplaceholder.typicode.com'
     DYNAMODB_ENDPOINT: 'http://localhost:8000'

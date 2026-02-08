@@ -136,4 +136,59 @@ describe('handler – 100% coverage', () => {
       baseURL: '',
     });
   });
+
+  it('handles DynamoDB send failure and throws error', async () => {
+    mockedCreateApi.mockReturnValue({
+      get: jest.fn().mockResolvedValue({
+        data: { id: 1, name: 'test' },
+      }),
+    });
+
+    const dbError = new Error('DynamoDB write failed');
+    mockedSend.mockRejectedValue(dbError);
+
+    await expect(handler(baseEvent, context)).rejects.toThrow('DynamoDB write failed');
+  });
+
+  it('handles axios get request failure', async () => {
+    const apiError = new Error('API request failed');
+    mockedCreateApi.mockReturnValue({
+      get: jest.fn().mockRejectedValue(apiError),
+    });
+
+    await expect(handler(baseEvent, context)).rejects.toThrow('API request failed');
+  });
+
+  it('includes correct endpoint in axios get call', async () => {
+    const mockGet = jest.fn().mockResolvedValue({
+      data: { id: 1 },
+    });
+
+    mockedCreateApi.mockReturnValue({
+      get: mockGet,
+    });
+
+    mockedSend.mockResolvedValue({});
+
+    await handler(baseEvent, context);
+
+    expect(mockGet).toHaveBeenCalledWith('todos/1');
+  });
+
+  it('uses correct payload structure for DynamoDB put operation', async () => {
+    mockedCreateApi.mockReturnValue({
+      get: jest.fn().mockResolvedValue({
+        data: { nested: { value: 'test' } },
+      }),
+    });
+
+    mockedSend.mockResolvedValue({});
+
+    await handler(baseEvent, context);
+
+    const putCommand = mockedSend.mock.calls[0][0] as PutCommand;
+    expect(putCommand.input.Item).toHaveProperty('taskId');
+    expect(putCommand.input.Item).toHaveProperty('createdAt');
+    expect(putCommand.input.Item).toHaveProperty('data');
+  });
 });

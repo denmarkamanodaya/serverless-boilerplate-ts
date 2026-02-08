@@ -1,5 +1,4 @@
 import httpStatus from 'http-status';
-import { RequestBody } from '../common/request.interface';
 import { ResponseMessage } from '../common/response.interface';
 
 export const jsonBodyMiddleware =
@@ -16,10 +15,6 @@ export const jsonBodyMiddleware =
         parsedBody = event.body;
       }
 
-      // Optional: type cast for TS
-      parsedBody = parsedBody as unknown as RequestBody;
-
-      // Pass the parsed body to the handler
       return handler({ ...event, body: parsedBody }, context);
     } catch (error) {
       return {

@@ -1,7 +1,0 @@
-
-export interface TestInterface {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}

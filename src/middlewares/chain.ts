@@ -1,4 +1,4 @@
-import { Middleware } from '../common/types';
+import { Middleware } from './middleware';
 import { jsonBodyMiddleware } from './body-parser.middleware';
 import { responseMiddleware } from './response.middlware';
 

@@ -1,4 +1,4 @@
-import { Middleware } from '../common/types';
+import { Middleware } from './middleware';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import httpStatus from 'http-status';
 import { ResponseMessage } from '../common/response.interface';

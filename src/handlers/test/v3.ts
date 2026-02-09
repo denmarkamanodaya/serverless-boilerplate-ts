@@ -1,13 +1,12 @@
 import httpStatus from 'http-status';
-import { LambdaHandler } from '../../middlewares/middleware';
-import { withMiddleware } from '../../middlewares/index';
+import { Middleware } from '../../middlewares/index2';
 import { ResponseMessage } from '../../common/response.interface';
 import { v4 as uuid } from 'uuid';
 import { ddbDocClient } from '../../models/dynamodb';
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import { createApi, ApiResponse } from '../../utils/axios';
 
-export const handler: LambdaHandler = withMiddleware(async (event) => {
+export const handler = Middleware(async (event) => {
   const { title, completed } = event.body;
 
   const api = createApi({ baseURL: process.env.TEST_AXIOS_ENDPOINT || '' });

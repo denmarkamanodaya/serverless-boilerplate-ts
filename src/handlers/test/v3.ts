@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { Middleware } from '../../middlewares/index2';
+import { Middleware } from '../../middlewares/index';
 import { ResponseMessage } from '../../common/response.interface';
 import { v4 as uuid } from 'uuid';
 import { ddbDocClient } from '../../models/dynamodb';

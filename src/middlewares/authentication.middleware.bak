@@ -1,0 +1,22 @@
+import { LambdaHandler } from './types.middleware';
+import HttpStatus from 'http-status';
+import { ResponseMessage } from '../common/response.interface';
+
+export const withAuth =
+  (handler: LambdaHandler): LambdaHandler =>
+  async (event, context) => {
+    const authHeader = event.headers?.Authorization || event.headers?.authorization;
+
+    if (!authHeader?.startsWith('Bearer ')) {
+      return {
+        statusCode: HttpStatus.UNAUTHORIZED,
+        body: JSON.stringify({ message: ResponseMessage.UNAUTHORIZED }),
+      };
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+
+    // validation here...
+
+    return handler({ ...event }, context);
+  };

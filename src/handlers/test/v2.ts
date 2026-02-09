@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { Middleware } from '../../middlewares/index2';
+import { Middleware } from '../../middlewares/index';
 import { createApi, ApiResponse } from '../../utils/axios';
 
 export const handler = Middleware(async (event) => {

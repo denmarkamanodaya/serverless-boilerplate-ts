@@ -1,10 +1,11 @@
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 import HttpStatus from 'http-status';
 import { ResponseMessage } from '../common/response.interface';
+import { LambdaHandler } from './types.middleware';
 
-export const Middleware =
-  (handler: (event: APIGatewayProxyEvent & { body: any }, context: Context) => Promise<APIGatewayProxyResult>) =>
-  async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
+export const withParsedBody =
+  (handler: LambdaHandler): LambdaHandler =>
+  async (event, context) => {
     try {
       let parsedBody: any = {};
 

@@ -1,16 +1,14 @@
 import httpStatus from 'http-status';
 import { Middleware } from '../../middlewares/index';
-import { ResponseMessage } from '../../common/response.interface';
+import { ResponseMessage } from '../../common/response.enum';
 import { v4 as uuid } from 'uuid';
-import { ddbDocClient } from '../../models/dynamodb';
-import { PutCommand } from '@aws-sdk/lib-dynamodb';
-import { createApi, ApiResponse } from '../../utils/axios';
+import { putItem } from '../../models/dynamodb';
+import axios from 'axios';
 
 export const handler = Middleware(async (event) => {
   const { title, completed } = event.body;
 
-  const api = createApi({ baseURL: process.env.TEST_AXIOS_ENDPOINT || '' });
-  const response: ApiResponse = await api.get(`todos/1`);
+  const response = await axios.get(`${process.env.TEST_AXIOS_ENDPOINT}/todos/1`);
 
   // Gated error
   if (!response.data) {
@@ -21,20 +19,15 @@ export const handler = Middleware(async (event) => {
   }
 
   const payload = {
-    taskId: uuid(),
-    title,
-    completed,
-    createdAt: new Date().toISOString(),
-    data: response.data,
+    taskId: { S: uuid() },
+    title: { S: title },
+    completed: { BOOL: completed },
+    createdAt: { S: new Date().toISOString() },
+    data: { S: JSON.stringify(response.data) },
   };
 
   // DynamoDB Operation
-  await ddbDocClient.send(
-    new PutCommand({
-      TableName: process.env.DYNAMODB_TABLE_NAME,
-      Item: payload,
-    }),
-  );
+  await putItem(payload);
 
   return {
     statusCode: httpStatus.OK,

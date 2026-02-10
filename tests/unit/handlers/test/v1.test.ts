@@ -2,7 +2,7 @@ import { handler } from '../../../../src/handlers/test/v1';
 import { Context } from 'aws-lambda';
 import httpStatus from 'http-status';
 import { makeEvent, validPayload, objectPayload, invalidPayload, validResponse } from '../../../fixtures/test.fixtures';
-import { ResponseMessage } from '../../../../src/common/response.interface';
+import { ResponseMessage } from '../../../../src/common/response.enum';
 
 describe('Lambda handler', () => {
   const context: Context = {} as Context;

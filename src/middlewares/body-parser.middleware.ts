@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 import HttpStatus from 'http-status';
-import { ResponseMessage } from '../common/response.interface';
+import { ResponseMessage } from '../common/response.enum';
 import { LambdaHandler } from './types.middleware';
 
 export const withParsedBody =

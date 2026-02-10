@@ -1,16 +1,19 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient, AttributeValue, PutItemCommand } from '@aws-sdk/client-dynamodb';
 
-const endpoint = process.env.DYNAMODB_ENDPOINT; // local DynamoDB endpoint
-
-// Test
 const client = new DynamoDBClient({
-    region: "local",
-    endpoint,
-    credentials: {
-        accessKeyId: "LOCAL",         // dummy keys (not used locally)
-        secretAccessKey: "LOCAL",
-    },
+  region: 'local',
+  endpoint: process.env.DYNAMODB_ENDPOINT,
+  credentials: {
+    accessKeyId: 'LOCAL',
+    secretAccessKey: 'LOCAL',
+  },
 });
 
-export const ddbDocClient = DynamoDBDocumentClient.from(client);
+export const putItem = async (item: Record<string, AttributeValue>) => {
+  await client.send(
+    new PutItemCommand({
+      TableName: process.env.DYNAMODB_TABLE_NAME!,
+      Item: item,
+    }),
+  );
+};

@@ -1,74 +1,44 @@
-// tests/handlers/handler.test.ts
-import httpStatus from 'http-status';
 import { handler } from '../../../../src/handlers/test/v2';
-import { createApi } from '../../../../src/utils/axios';
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
-import { makeEvent, validPayload } from '../../../fixtures/test.fixtures';
+import axios from 'axios';
+import httpStatus from 'http-status';
 
-jest.mock('../../../../src/utils/axios', () => ({
-  createApi: jest.fn(),
+jest.mock('axios');
+jest.mock('../../../../src/middlewares/index.ts', () => ({
+  Middleware: (fn: Function) => fn,
 }));
 
-const mockedCreateApi = createApi as jest.Mock;
+describe('v2 handler', () => {
+  const mockAxios = axios as jest.Mocked<typeof axios>;
 
-const context: Context = {} as Context;
-
-describe('handler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    process.env.TEST_AXIOS_ENDPOINT = 'https://example.com';
+    process.env.TEST_AXIOS_ENDPOINT = 'https://jsonplaceholder.typicode.com';
   });
 
-  it('should call axios and return API data', async () => {
-    const mockGet = jest.fn().mockResolvedValue({
-      data: {
-        id: 1,
-        title: 'Test Todo',
-        completed: false,
-      },
-    });
+  it('should return successful response with todo data', async () => {
+    const mockTodoData = { id: 1, title: 'Test Todo', completed: false };
+    mockAxios.get.mockResolvedValue({ data: mockTodoData });
 
-    mockedCreateApi.mockReturnValue({
-      get: mockGet,
-    });
+    const result = await handler({} as any);
 
-    const result = await handler(makeEvent(JSON.stringify(validPayload)), context);
-
-    expect(createApi).toHaveBeenCalledWith({
-      baseURL: 'https://example.com',
-    });
-    expect(mockGet).toHaveBeenCalledWith('todos/1');
-
-    // 🔹 lambda response assertions
+    expect(mockAxios.get).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/todos/1');
     expect(result.statusCode).toBe(httpStatus.OK);
-
-    const body = JSON.parse(result.body);
-    expect(body.data).toEqual({
-      id: 1,
-      title: 'Test Todo',
-      completed: false,
-    });
+    expect(JSON.parse(result.body)).toEqual({ data: mockTodoData });
   });
 
-  it('should fall back to empty baseURL when TEST_AXIOS_ENDPOINT is undefined', async () => {
-    // 🔹 force OR branch
-    delete process.env.TEST_AXIOS_ENDPOINT;
+  it('should handle axios errors', async () => {
+    const error = new Error('Network error');
+    mockAxios.get.mockRejectedValue(error);
 
-    const mockGet = jest.fn().mockResolvedValue({
-      data: { id: 1 },
-    });
+    await expect(handler({} as any)).rejects.toThrow('Network error');
+  });
 
-    mockedCreateApi.mockReturnValue({
-      get: mockGet,
-    });
+  it('should use TEST_AXIOS_ENDPOINT environment variable', async () => {
+    process.env.TEST_AXIOS_ENDPOINT = 'https://custom-endpoint.com';
+    mockAxios.get.mockResolvedValue({ data: {} });
 
-    const result = await handler(makeEvent(JSON.stringify(validPayload)), context);
+    await handler({} as any);
 
-    // 🔹 assert OR path
-    expect(createApi).toHaveBeenCalledWith({
-      baseURL: '',
-    });
-
-    expect(result.statusCode).toBe(httpStatus.OK);
+    expect(mockAxios.get).toHaveBeenCalledWith('https://custom-endpoint.com/todos/1');
   });
 });

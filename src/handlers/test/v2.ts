@@ -1,10 +1,9 @@
 import httpStatus from 'http-status';
 import { Middleware } from '../../middlewares/index';
-import { createApi, ApiResponse } from '../../utils/axios';
+import axios from 'axios';
 
 export const handler = Middleware(async (event) => {
-  const api = createApi({ baseURL: process.env.TEST_AXIOS_ENDPOINT || '' });
-  const response: ApiResponse = await api.get(`todos/1`);
+  const response = await axios.get(`${process.env.TEST_AXIOS_ENDPOINT}/todos/1`);
 
   return {
     statusCode: httpStatus.OK,

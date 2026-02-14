@@ -10,6 +10,7 @@ export const handler = Middleware(async (event) => {
   const payload = {
     caseId: v4(),
     data,
+    status: process.env.CASE_STATUS_ACTIVE,
     createdAt: new Date().toISOString(),
   };
 

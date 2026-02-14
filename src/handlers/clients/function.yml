@@ -1,0 +1,13 @@
+create-client-v1:
+  handler: .build/handlers/clients/create/v1.handler
+  events:
+    - httpApi:
+        path: client/v1/create
+        method: POST
+
+get-client-v1:
+  handler: .build/handlers/clients/get/v1.handler
+  events:
+    - httpApi:
+        path: client/v1/get
+        method: GET

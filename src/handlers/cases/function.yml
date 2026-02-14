@@ -1,0 +1,13 @@
+create-case-v1:
+  handler: .build/handlers/cases/create/v1.handler
+  events:
+    - httpApi:
+        path: case/v1/create
+        method: POST
+
+get-case-v1:
+  handler: .build/handlers/cases/get/v1.handler
+  events:
+    - httpApi:
+        path: case/v1/get
+        method: GET

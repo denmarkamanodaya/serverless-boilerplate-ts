@@ -1,30 +1,49 @@
-import { CreateTableCommand } from "@aws-sdk/client-dynamodb";
-import { ddbDocClient } from "../src/models/dynamodb";
+import { CreateTableCommand } from '@aws-sdk/client-dynamodb';
+import { client } from '../src/models/dynamodb';
 
-async function createTable() {
+async function createCasesTable() {
   try {
-    await ddbDocClient.send(
+    await client.send(
       new CreateTableCommand({
-        TableName: "MyTable",
+        TableName: 'Cases',
         AttributeDefinitions: [
-          { AttributeName: "taskId", AttributeType: "S" }, // STRING
-          { AttributeName: "title", AttributeType: "S" },      // STRING
+          { AttributeName: 'caseId', AttributeType: 'S' }, // STRING
         ],
-        KeySchema: [
-          { AttributeName: "taskId", KeyType: "HASH" },
-          { AttributeName: "title", KeyType: "RANGE" },
-        ],
-        ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 }
-      })
+        KeySchema: [{ AttributeName: 'caseId', KeyType: 'HASH' }],
+        ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
+      }),
     );
-    console.log("Table created!");
+    console.log('Table created!');
   } catch (err: any) {
-    if (err.name === "ResourceInUseException") {
-      console.log("Table already exists");
+    if (err.name === 'ResourceInUseException') {
+      console.log('Table already exists');
     } else {
       console.error(err);
     }
   }
 }
 
-createTable();
+async function createClientsTable() {
+  try {
+    await client.send(
+      new CreateTableCommand({
+        TableName: 'Clients',
+        AttributeDefinitions: [
+          { AttributeName: 'clientId', AttributeType: 'S' }, // STRING
+        ],
+        KeySchema: [{ AttributeName: 'clientId', KeyType: 'HASH' }],
+        ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
+      }),
+    );
+    console.log('Table created!');
+  } catch (err: any) {
+    if (err.name === 'ResourceInUseException') {
+      console.log('Table already exists');
+    } else {
+      console.error(err);
+    }
+  }
+}
+
+createCasesTable();
+createClientsTable();

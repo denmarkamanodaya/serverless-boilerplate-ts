@@ -18,6 +18,8 @@ provider:
     DYNAMODB_CASES_TABLE_NAME: 'Cases'
     DYNAMODB_CLIENTS_TABLE_NAME: 'Clients'
 
+    CASE_STATUS_ACTIVE: 'active'
+
     HASH_SALT_ROUNDS: 12
 
 package:

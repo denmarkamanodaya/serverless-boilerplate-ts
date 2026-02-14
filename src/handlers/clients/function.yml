@@ -5,6 +5,13 @@ create-client-v1:
         path: client/v1/create
         method: POST
 
+list-client-v1:
+  handler: .build/handlers/clients/list/v1.handler
+  events:
+    - httpApi:
+        path: client/v1/list
+        method: GET
+
 get-client-v1:
   handler: .build/handlers/clients/get/v1.handler
   events:

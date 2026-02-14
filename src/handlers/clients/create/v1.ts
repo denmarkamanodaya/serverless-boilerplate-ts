@@ -5,14 +5,14 @@ import { putItem } from '../../../models/dynamodb';
 import { v4 } from 'uuid';
 
 export const handler = Middleware(async (event) => {
-  const { clientName, address, tin, businessName } = event.body;
+  const { clientName, businessAddress, taxId, businessName } = event.body;
 
   const payload = {
     clientId: v4(),
     clientName: clientName,
     businessName: businessName,
-    address: address,
-    tin: tin,
+    businessAddress: businessAddress,
+    taxId: taxId,
   };
 
   // DynamoDB Operation

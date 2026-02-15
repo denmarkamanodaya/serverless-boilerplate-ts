@@ -2,26 +2,26 @@ create-case-v1:
   handler: .build/handlers/cases/create/v1.handler
   events:
     - httpApi:
-        path: case/v1/create
+        path: /case/v1/create
         method: POST
 
 get-case-v1:
   handler: .build/handlers/cases/get/v1.handler
   events:
     - httpApi:
-        path: case/v1/get
+        path: /case/v1/get
         method: GET
 
 list-case-v1:
   handler: .build/handlers/cases/list/v1.handler
   events:
     - httpApi:
-        path: case/v1/list
+        path: /case/v1/list
         method: GET
 
 status-update-case-v1:
   handler: .build/handlers/cases/status-update/v1.handler
   events:
     - httpApi:
-        path: case/v1/status-update
+        path: /case/v1/status-update
         method: PUT

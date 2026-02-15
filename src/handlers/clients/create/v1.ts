@@ -3,6 +3,7 @@ import { Middleware } from '../../../middlewares/index';
 import { ResponseMessage } from '../../../common/response.enum';
 import { v4 } from 'uuid';
 import { ClientService } from '../../../utils/client-service';
+import { HistoryRepository } from '../../../models/history/history.repository';
 
 export const handler = Middleware(async (event) => {
   const { clientName, businessAddress, taxId, businessName } = event.body;
@@ -17,6 +18,7 @@ export const handler = Middleware(async (event) => {
 
   // DynamoDB Operation
   await ClientService.createClient(payload);
+  await HistoryRepository.create('CLIENT_CREATED', `Created new client: ${clientName || businessName}`, payload.clientId);
 
   return {
     statusCode: httpStatus.OK,

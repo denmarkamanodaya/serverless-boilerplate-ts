@@ -1,0 +1,6 @@
+history-list-v1:
+  handler: .build/handlers/history/list/v1.handler
+  events:
+    - httpApi:
+        path: /history/v1/list
+        method: GET

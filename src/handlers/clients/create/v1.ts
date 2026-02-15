@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import { Middleware } from '../../../middlewares/index';
 import { ResponseMessage } from '../../../common/response.enum';
-import { putItem } from '../../../models/dynamodb';
 import { v4 } from 'uuid';
+import { ClientService } from '../../../utils/client-service';
 
 export const handler = Middleware(async (event) => {
   const { clientName, businessAddress, taxId, businessName } = event.body;
@@ -16,7 +16,7 @@ export const handler = Middleware(async (event) => {
   };
 
   // DynamoDB Operation
-  await putItem(process.env.DYNAMODB_CLIENTS_TABLE_NAME!, payload);
+  await ClientService.createClient(payload);
 
   return {
     statusCode: httpStatus.OK,

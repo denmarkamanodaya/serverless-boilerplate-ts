@@ -18,7 +18,7 @@ provider:
     DYNAMODB_CASES_TABLE_NAME: 'Cases'
     DYNAMODB_CLIENTS_TABLE_NAME: 'Clients'
 
-    CASE_STATUS_ACTIVE: 'active'
+    CASE_STATUS: 'quotation'
 
     HASH_SALT_ROUNDS: 12
 
@@ -31,7 +31,7 @@ package:
 
 functions:
   - ${file(src/handlers/clients/function.yml)}
-  - ${file(src/handlers/cases/function.yml)}
+  # - ${file(src/handlers/cases/function.yml)}
 
 plugins:
   - serverless-offline

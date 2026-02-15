@@ -1,49 +1,52 @@
-import { CreateTableCommand } from '@aws-sdk/client-dynamodb';
-import { client } from '../src/models/dynamodb';
+import { CreateTableCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
-async function createCasesTable() {
-  try {
-    await client.send(
-      new CreateTableCommand({
-        TableName: 'Cases',
-        AttributeDefinitions: [
-          { AttributeName: 'caseId', AttributeType: 'S' }, // STRING
+const client = new DynamoDBClient({
+  region: 'local',
+  endpoint: 'http://localhost:8000',
+  credentials: {
+    accessKeyId: 'LOCAL',
+    secretAccessKey: 'LOCAL',
+  },
+});
+
+const createTable = async () => {
+  const command = new CreateTableCommand({
+    TableName: 'Firetron',
+
+    AttributeDefinitions: [
+      { AttributeName: 'PK', AttributeType: 'S' },
+      { AttributeName: 'SK', AttributeType: 'S' },
+      { AttributeName: 'GSI1PK', AttributeType: 'S' },
+      { AttributeName: 'GSI1SK', AttributeType: 'S' },
+    ],
+
+    KeySchema: [
+      { AttributeName: 'PK', KeyType: 'HASH' },
+      { AttributeName: 'SK', KeyType: 'RANGE' },
+    ],
+
+    BillingMode: 'PAY_PER_REQUEST',
+
+    GlobalSecondaryIndexes: [
+      {
+        IndexName: 'GSI1',
+        KeySchema: [
+          { AttributeName: 'GSI1PK', KeyType: 'HASH' },
+          { AttributeName: 'GSI1SK', KeyType: 'RANGE' },
         ],
-        KeySchema: [{ AttributeName: 'caseId', KeyType: 'HASH' }],
-        ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
-      }),
-    );
-    console.log('Table created!');
-  } catch (err: any) {
-    if (err.name === 'ResourceInUseException') {
-      console.log('Table already exists');
-    } else {
-      console.error(err);
-    }
-  }
-}
+        Projection: {
+          ProjectionType: 'ALL',
+        },
+      },
+    ],
+  });
 
-async function createClientsTable() {
   try {
-    await client.send(
-      new CreateTableCommand({
-        TableName: 'Clients',
-        AttributeDefinitions: [
-          { AttributeName: 'clientId', AttributeType: 'S' }, // STRING
-        ],
-        KeySchema: [{ AttributeName: 'clientId', KeyType: 'HASH' }],
-        ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
-      }),
-    );
-    console.log('Table created!');
-  } catch (err: any) {
-    if (err.name === 'ResourceInUseException') {
-      console.log('Table already exists');
-    } else {
-      console.error(err);
-    }
+    const result = await client.send(command);
+    console.log('Table created:', result);
+  } catch (err) {
+    console.error('Error creating table:', err);
   }
-}
+};
 
-createCasesTable();
-createClientsTable();
+createTable();

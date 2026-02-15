@@ -28,4 +28,11 @@ export const Keys = {
       SK: 'META',
     };
   },
+
+  case(caseId: string): BaseKey {
+    return {
+      PK: `CASE#${caseId}`,
+      SK: 'META',
+    };
+  },
 };

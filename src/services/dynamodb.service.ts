@@ -46,12 +46,13 @@ export class DynamoDBService {
         );
     }
 
-    async query(keyConditionExpression: string, expressionAttributeValues: Record<string, any>) {
+    async query(keyConditionExpression: string, expressionAttributeValues: Record<string, any>, options: any = {}) {
         return this.docClient.send(
             new QueryCommand({
                 TableName: this.tableName,
                 KeyConditionExpression: keyConditionExpression,
                 ExpressionAttributeValues: expressionAttributeValues,
+                ...options
             }),
         );
     }

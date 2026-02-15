@@ -4,6 +4,7 @@ import { ResponseMessage } from '../../../common/response.enum';
 import { v4 } from 'uuid';
 import { CaseFactory } from '../../../models/cases/case.factory';
 import { CaseRepository } from '../../../models/cases/case.repository';
+import { HistoryRepository } from '../../../models/history/history.repository';
 
 export const handler = Middleware(async (event) => {
   const { data, status, caseId } = event.body;
@@ -19,6 +20,7 @@ export const handler = Middleware(async (event) => {
   });
 
   await CaseRepository.save(caseEntity);
+  await HistoryRepository.create('CASE_CREATED', `Created Case #${finalCaseId.slice(-4).toUpperCase()}`, finalCaseId);
 
   return {
     statusCode: httpStatus.OK,

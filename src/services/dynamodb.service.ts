@@ -65,7 +65,19 @@ export class DynamoDBService {
         );
     }
 
-    async scan(filterExpression?: string, expressionAttributeValues?: Record<string, any>) {
+    async update(key: Record<string, any>, updateExpression: string, expressionAttributeNames: Record<string, string>, expressionAttributeValues: Record<string, any>) {
+        return this.docClient.send(
+            new UpdateCommand({
+                TableName: this.tableName,
+                Key: key,
+                UpdateExpression: updateExpression,
+                ExpressionAttributeNames: expressionAttributeNames,
+                ExpressionAttributeValues: expressionAttributeValues,
+            }),
+        );
+    }
+
+    async scan(filterExpression?: string, expressionAttributeValues?: Record<string, any>, expressionAttributeNames?: Record<string, string>) {
         const params: any = {
             TableName: this.tableName,
         };
@@ -76,6 +88,10 @@ export class DynamoDBService {
 
         if (expressionAttributeValues) {
             params.ExpressionAttributeValues = expressionAttributeValues;
+        }
+
+        if (expressionAttributeNames) {
+            params.ExpressionAttributeNames = expressionAttributeNames;
         }
 
         return this.docClient.send(new ScanCommand(params));

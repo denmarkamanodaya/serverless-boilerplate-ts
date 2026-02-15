@@ -1,9 +1,17 @@
 import { BaseEntity } from '../base.entity';
 
+export interface CaseCreator {
+    email: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl?: string;
+}
+
 export interface CaseInput {
     caseId: string;
     status: string;
     data: any; // Flexible data payload
+    createdBy?: CaseCreator;
 }
 
 export interface CaseEntity extends BaseEntity {
@@ -11,4 +19,5 @@ export interface CaseEntity extends BaseEntity {
     caseId: string;
     status: string;
     data: any;
+    createdBy?: CaseCreator;
 }

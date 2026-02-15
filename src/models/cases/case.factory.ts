@@ -9,6 +9,7 @@ export class CaseFactory {
             caseId: input.caseId,
             status: input.status,
             data: input.data,
+            createdBy: input.createdBy,
             createdAt: new Date().toISOString(),
         };
     }

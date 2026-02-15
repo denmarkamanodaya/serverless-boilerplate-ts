@@ -7,7 +7,8 @@ import { CaseRepository } from '../../../models/cases/case.repository';
 import { HistoryRepository } from '../../../models/history/history.repository';
 
 export const handler = Middleware(async (event) => {
-  const { data, status, caseId } = event.body;
+  console.log('Received event body:', JSON.stringify(event.body, null, 2));
+  const { data, status, caseId, createdBy } = event.body;
 
   // Use provided caseId (for edits) or generate new one
   const finalCaseId = caseId || v4();
@@ -17,10 +18,11 @@ export const handler = Middleware(async (event) => {
     caseId: finalCaseId,
     status: finalStatus,
     data,
+    createdBy,
   });
 
   await CaseRepository.save(caseEntity);
-  await HistoryRepository.create('CASE_CREATED', `Created Case #${finalCaseId.slice(-4).toUpperCase()}`, finalCaseId);
+  await HistoryRepository.create('CASE_CREATED', `Created Case #${finalCaseId.slice(-4).toUpperCase()}`, finalCaseId, createdBy);
 
   return {
     statusCode: httpStatus.OK,

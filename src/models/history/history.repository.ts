@@ -3,8 +3,8 @@ import { HistoryFactory } from './history.factory';
 import { HistoryEntity } from './history.types';
 
 export class HistoryRepository {
-    static async create(action: string, description: string, relatedId?: string) {
-        const entity = HistoryFactory.create(action, description, relatedId);
+    static async create(action: string, description: string, relatedId?: string, user?: any) {
+        const entity = HistoryFactory.create(action, description, relatedId, user);
         await dynamoDBService.put(entity);
         return entity;
     }

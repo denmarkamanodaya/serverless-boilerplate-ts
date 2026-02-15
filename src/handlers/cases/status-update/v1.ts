@@ -5,10 +5,10 @@ import { CaseRepository } from '../../../models/cases/case.repository';
 import { HistoryRepository } from '../../../models/history/history.repository';
 
 export const handler = Middleware(async (event) => {
-  const { caseId, status } = event.body!;
+  const { caseId, status, user } = event.body!;
 
   await CaseRepository.updateStatus(caseId, status);
-  await HistoryRepository.create('STATUS_UPDATE', `Updated status of Case #${caseId.slice(-4).toUpperCase()} to ${status.toUpperCase()}`, caseId);
+  await HistoryRepository.create('STATUS_UPDATE', `Updated status of Case #${caseId.slice(-4).toUpperCase()} to ${status.toUpperCase()}`, caseId, user);
 
   return {
     statusCode: httpStatus.OK,

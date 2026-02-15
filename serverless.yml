@@ -32,6 +32,7 @@ package:
 functions:
   - ${file(src/handlers/clients/function.yml)}
   - ${file(src/handlers/cases/function.yml)}
+  - ${file(src/handlers/reports/function.yml)}
 
 plugins:
   - serverless-offline

@@ -1,0 +1,6 @@
+top-products-v1:
+  handler: .build/handlers/reports/top-products/v1.handler
+  events:
+    - httpApi:
+        path: /reports/v1/top-products
+        method: GET

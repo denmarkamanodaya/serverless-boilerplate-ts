@@ -1,15 +1,14 @@
 import httpStatus from 'http-status';
 import { Middleware } from '../../../middlewares/index';
-import { getAll } from '../../../models/dynamodb';
+import { ClientRepository } from '../../../models/client/client.repository';
 
 export const handler = Middleware(async (event) => {
-  // DynamoDB Operation
-  const response = await getAll(process.env.DYNAMODB_CLIENTS_TABLE_NAME!);
+  const clients = await ClientRepository.list();
 
   return {
     statusCode: httpStatus.OK,
     body: JSON.stringify({
-      data: response?.Items ? JSON.parse(JSON.stringify(response.Items)) : [],
+      data: clients,
     }),
   };
 });

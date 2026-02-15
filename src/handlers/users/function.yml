@@ -1,0 +1,6 @@
+create-user-v1:
+  handler: .build/handlers/users/create/v1.handler
+  events:
+    - httpApi:
+        path: user/v1/create
+        method: POST

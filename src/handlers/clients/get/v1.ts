@@ -1,20 +1,26 @@
 import httpStatus from 'http-status';
 import { Middleware } from '../../../middlewares/index';
 import { ResponseMessage } from '../../../common/response.enum';
-import { getItem } from '../../../models/dynamodb';
+import { ClientRepository } from '../../../models/client/client.repository';
 
 export const handler = Middleware(async (event) => {
   const { id } = event.queryStringParameters!;
 
-  // DynamoDB Operation
-  const response = await getItem(process.env.DYNAMODB_CLIENTS_TABLE_NAME!, 'clientId', id!);
+  const client = await ClientRepository.get(id!);
 
-  console.log(response.Item);
+  if (!client) {
+    return {
+      statusCode: httpStatus.NOT_FOUND,
+      body: JSON.stringify({
+        message: 'Client not found',
+      }),
+    };
+  }
 
   return {
     statusCode: httpStatus.OK,
     body: JSON.stringify({
-      data: response?.Item ? JSON.parse(JSON.stringify(response.Item)) : {},
+      data: client,
     }),
   };
 });

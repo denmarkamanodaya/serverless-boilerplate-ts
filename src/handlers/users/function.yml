@@ -2,5 +2,12 @@ create-user-v1:
   handler: .build/handlers/users/create/v1.handler
   events:
     - httpApi:
-        path: user/v1/create
+        path: /user/v1/create
+        method: POST
+
+login-user-v1:
+  handler: .build/handlers/users/login/v1.handler
+  events:
+    - httpApi:
+        path: /user/v1/login
         method: POST

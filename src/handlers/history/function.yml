@@ -4,3 +4,10 @@ history-list-v1:
     - httpApi:
         path: /history/v1/list
         method: GET
+
+history-by-case-v1:
+  handler: .build/handlers/history/getByCase/v1.handler
+  events:
+    - httpApi:
+        path: /history/v1/{caseId}
+        method: GET

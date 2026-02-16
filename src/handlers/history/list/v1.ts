@@ -4,7 +4,7 @@ import { ResponseMessage } from '../../../common/response.enum';
 import { HistoryRepository } from '../../../models/history/history.repository';
 
 export const handler = Middleware(async (event) => {
-    const logs = await HistoryRepository.list();
+    const logs = await HistoryRepository.list(20);
 
     return {
         statusCode: httpStatus.OK,

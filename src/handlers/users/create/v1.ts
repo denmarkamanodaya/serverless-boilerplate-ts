@@ -13,6 +13,7 @@ const schema = Joi.object({
   role: Joi.string().valid(...Object.values(UserRole)).required(),
   avatarUrl: Joi.string().uri().allow(null, '').optional(),
   status: Joi.string().valid(...Object.values(UserStatus)).default(UserStatus.ACTIVE),
+  metadata: Joi.string().optional(),
 });
 
 export const handler = Middleware(async (event) => {
@@ -54,6 +55,8 @@ export const handler = Middleware(async (event) => {
     status: value.status || UserStatus.ACTIVE,
     createdAt: new Date().toISOString(),
     avatarUrl: value.avatarUrl,
+    metadata: value.metadata,
+    type: 'USER' as const,
   };
 
   await UserRepository.save(newUser);

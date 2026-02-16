@@ -22,6 +22,8 @@ export interface UserEntity {
     status: UserStatus;
     createdAt: string;
     avatarUrl?: string; // Optional
+    metadata?: string; // JSON string for extra data
+    type: 'USER';
 }
 
 export interface CreateUserDTO {
@@ -32,4 +34,5 @@ export interface CreateUserDTO {
     role: UserRole;
     avatarUrl?: string;
     status?: UserStatus;
+    metadata?: string;
 }

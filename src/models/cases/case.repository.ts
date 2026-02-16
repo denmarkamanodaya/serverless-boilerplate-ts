@@ -42,4 +42,10 @@ export class CaseRepository {
             ':status': status,
         });
     }
+    static async delete(caseId: string) {
+        await dynamoDBService.delete({
+            PK: `CASE#${caseId}`,
+            SK: 'META',
+        });
+    }
 }

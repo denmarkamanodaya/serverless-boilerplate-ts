@@ -5,6 +5,7 @@ export interface CaseCreator {
     firstName: string;
     lastName: string;
     avatarUrl?: string;
+    metadata?: string;
 }
 
 export interface CaseInput {

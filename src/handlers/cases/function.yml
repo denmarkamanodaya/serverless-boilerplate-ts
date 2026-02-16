@@ -25,3 +25,38 @@ status-update-case-v1:
     - httpApi:
         path: /case/v1/status-update
         method: PUT
+
+seed-case-v1:
+  handler: .build/handlers/cases/seed/v1.handler
+  events:
+    - httpApi:
+        path: /case/v1/seed
+        method: GET
+
+delete-old-cases-v1:
+  handler: .build/handlers/cases/deleteOld/v1.handler
+  events:
+    - httpApi:
+        path: /case/v1/delete-old
+        method: DELETE
+
+list-notifications-v1:
+  handler: .build/handlers/notifications/list/v1.handler
+  events:
+    - httpApi:
+        path: /notification/v1/list
+        method: GET
+
+create-post-v1:
+  handler: .build/handlers/posts/create/v1.handler
+  events:
+    - httpApi:
+        path: /post/v1/create
+        method: POST
+
+list-posts-v1:
+  handler: .build/handlers/posts/list/v1.handler
+  events:
+    - httpApi:
+        path: /post/v1/list
+        method: GET

@@ -46,17 +46,3 @@ list-notifications-v1:
     - httpApi:
         path: /notification/v1/list
         method: GET
-
-create-post-v1:
-  handler: .build/handlers/posts/create/v1.handler
-  events:
-    - httpApi:
-        path: /post/v1/create
-        method: POST
-
-list-posts-v1:
-  handler: .build/handlers/posts/list/v1.handler
-  events:
-    - httpApi:
-        path: /post/v1/list
-        method: GET

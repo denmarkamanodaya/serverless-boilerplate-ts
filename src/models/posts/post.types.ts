@@ -14,4 +14,5 @@ export interface PostEntity extends BaseEntity {
     createdBy: PostCreator | string; // Support both for backward compatibility
     tags: string[]; // Extracted tags like ['344A']
     reactionCounter: number;
+    commentCount?: number; // Number of comments
 }

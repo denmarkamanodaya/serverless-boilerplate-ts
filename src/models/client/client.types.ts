@@ -6,6 +6,7 @@ export interface ClientInput {
   businessName: string;
   businessAddress: string;
   taxId: string;
+  metadata?: string;
 }
 
 export interface ClientEntity extends BaseEntity {
@@ -15,4 +16,5 @@ export interface ClientEntity extends BaseEntity {
   businessAddress: string;
   taxId: string;
   status: 'ACTIVE' | 'INACTIVE';
+  metadata?: string;
 }

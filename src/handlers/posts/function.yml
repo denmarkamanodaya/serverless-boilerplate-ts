@@ -1,0 +1,27 @@
+post-v1-list:
+  handler: .build/handlers/posts/list/v1.handler
+  events:
+    - httpApi:
+        path: /post/v1/list
+        method: get
+
+post-v1-create:
+  handler: .build/handlers/posts/create/v1.handler
+  events:
+    - httpApi:
+        path: /post/v1/create
+        method: post
+
+post-comment-v1-create:
+  handler: .build/handlers/posts/comments/create/v1.handler
+  events:
+    - httpApi:
+        path: /post/v1/comment/create
+        method: post
+
+post-comment-v1-list:
+  handler: .build/handlers/posts/comments/list/v1.handler
+  events:
+    - httpApi:
+        path: /post/v1/comment/list
+        method: get

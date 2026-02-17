@@ -1,0 +1,13 @@
+automationTest:
+  handler: .build/handlers/automation/test/v1.handler
+  events:
+    - httpApi:
+        path: /automation/v1/test
+        method: post
+
+automationArchiver:
+  handler: .build/handlers/automation/archiver/v1.handler
+  events:
+    - httpApi:
+        path: /automation/v1/archiver
+        method: post

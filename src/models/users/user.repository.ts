@@ -14,4 +14,14 @@ export class UserRepository {
 
         return result.Item as UserEntity | undefined;
     }
+
+    static async list(): Promise<UserEntity[]> {
+        const result = await dynamoDBService.scan(
+            '#type = :type',
+            { ':type': 'USER' },
+            { '#type': 'type' }
+        );
+
+        return (result.Items || []) as UserEntity[];
+    }
 }

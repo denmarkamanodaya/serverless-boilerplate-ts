@@ -11,3 +11,10 @@ login-user-v1:
     - httpApi:
         path: /user/v1/login
         method: POST
+
+list-user-v1:
+  handler: .build/handlers/users/list/v1.handler
+  events:
+    - httpApi:
+        path: /user/v1/list
+        method: GET

@@ -36,6 +36,7 @@ functions:
   - ${file(src/handlers/history/function.yml)}
   - ${file(src/handlers/users/function.yml)}
   - ${file(src/handlers/automation/function.yml)}
+  - ${file(src/handlers/posts/function.yml)}
 
 plugins:
   - serverless-offline

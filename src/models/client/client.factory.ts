@@ -11,6 +11,7 @@ export class ClientFactory {
       businessAddress: input.businessAddress,
       taxId: input.taxId,
       status: 'ACTIVE',
+      metadata: input.metadata,
       createdAt: new Date().toISOString(),
     };
   }

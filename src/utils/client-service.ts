@@ -8,6 +8,7 @@ export class ClientService {
     businessName: string;
     businessAddress: string;
     taxId: string;
+    metadata?: string;
   }) {
     const entity = ClientFactory.create(data);
 

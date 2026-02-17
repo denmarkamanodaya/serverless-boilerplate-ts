@@ -6,7 +6,7 @@ import { ClientService } from '../../../utils/client-service';
 import { HistoryRepository } from '../../../models/history/history.repository';
 
 export const handler = Middleware(async (event) => {
-  const { clientName, businessAddress, taxId, businessName } = event.body;
+  const { clientName, businessAddress, taxId, businessName, metadata } = event.body;
 
   const payload = {
     clientId: v4(),
@@ -14,6 +14,7 @@ export const handler = Middleware(async (event) => {
     businessName: businessName,
     businessAddress: businessAddress,
     taxId: taxId,
+    metadata: metadata
   };
 
   // DynamoDB Operation

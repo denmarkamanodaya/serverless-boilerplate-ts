@@ -15,6 +15,7 @@ provider:
     NODE_ENV: ${env:NODE_ENV, 'development'}
     TEST_AXIOS_ENDPOINT: 'https://jsonplaceholder.typicode.com'
     DYNAMODB_ENDPOINT: 'http://localhost:8000'
+    DYNAMODB_TABLE_NAME: ${env:DYNAMODB_TABLE_NAME, 'Firetron'}
     DYNAMODB_CASES_TABLE_NAME: 'Cases'
     DYNAMODB_CLIENTS_TABLE_NAME: 'Clients'
 

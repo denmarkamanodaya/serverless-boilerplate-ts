@@ -17,9 +17,9 @@ export class UserRepository {
 
     static async list(): Promise<UserEntity[]> {
         const result = await dynamoDBService.scan(
-            '#type = :type AND (attribute_not_exists(#status) OR #status <> :archived)',
-            { ':type': 'USER', ':archived': 'ARCHIVED' },
-            { '#type': 'type', '#status': 'status' }
+            '#type = :type',
+            { ':type': 'USER' },
+            { '#type': 'type' }
         );
 
         return (result.Items || []) as UserEntity[];

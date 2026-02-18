@@ -35,7 +35,7 @@ export class AutomationRepository {
 
     static async archiveByAge(type: string, ageInDays: number) {
         const cutoffDate = new Date();
-        cutoffDate.setDate(cutoffDate.getDate() + ageInDays);
+        cutoffDate.setDate(cutoffDate.getDate() - ageInDays);
 
         const scanResult = await dynamoDBService.scan(
             '#type = :type AND #createdAt < :cutoffDate',

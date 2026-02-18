@@ -26,8 +26,11 @@ export class CaseRepository {
             return (result.Items || []) as CaseEntity[];
         }
 
-        const result = await dynamoDBService.scan('begins_with(PK, :pk)', {
+        const result = await dynamoDBService.scan('begins_with(PK, :pk) AND (attribute_not_exists(#status) OR #status <> :archived)', {
             ':pk': 'CASE#',
+            ':archived': 'ARCHIVED',
+        }, {
+            '#status': 'status',
         });
         return (result.Items || []) as CaseEntity[];
     }

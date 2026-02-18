@@ -19,10 +19,13 @@ export class PostRepository {
     static async list() {
         // Query global posts
         const result = await dynamoDBService.query('PK = :pk', {
-            ':pk': 'POST#ALL'
+            ':pk': 'POST#ALL',
+            ':archived': 'ARCHIVED',
         }, {
             ScanIndexForward: false, // Newest first
-            Limit: 50 // Increased limit to see recent posts better
+            Limit: 50, // Increased limit to see recent posts better
+            FilterExpression: 'attribute_not_exists(#status) OR #status <> :archived',
+            ExpressionAttributeNames: { '#status': 'status' },
         });
 
         return (result.Items || []) as PostEntity[];

@@ -13,9 +13,12 @@ export class HistoryRepository {
         // Query PK="HISTORY" and sort by SK (Timestamp) descending to get newest first
         const result = await dynamoDBService.query('PK = :pk', {
             ':pk': 'HISTORY',
+            ':archived': 'ARCHIVED',
         }, {
             ScanIndexForward: false, // Descending order
             Limit: limit,
+            FilterExpression: 'attribute_not_exists(#status) OR #status <> :archived',
+            ExpressionAttributeNames: { '#status': 'status' },
         });
 
         return (result.Items || []) as HistoryEntity[];
@@ -30,9 +33,11 @@ export class HistoryRepository {
         const result = await dynamoDBService.query('PK = :pk', {
             ':pk': 'HISTORY',
             ':caseId': caseId,
+            ':archived': 'ARCHIVED',
         }, {
             ScanIndexForward: true, // Ascending order (oldest to newest for journey)
-            FilterExpression: 'relatedId = :caseId',
+            FilterExpression: 'relatedId = :caseId AND (attribute_not_exists(#status) OR #status <> :archived)',
+            ExpressionAttributeNames: { '#status': 'status' },
             Limit: limit,
         });
 

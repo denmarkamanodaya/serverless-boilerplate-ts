@@ -13,17 +13,40 @@ export class DynamoDBService {
     private docClient: DynamoDBDocumentClient;
     private tableName: string;
 
-    constructor(tableName: string, region: string = 'local', endpoint: string = 'http://localhost:8000') {
-        const client = new DynamoDBClient({
-            region,
-            endpoint,
-            credentials: {
+    constructor(tableName: string) {
+        this.tableName = tableName;
+
+        const isOffline = process.env.IS_OFFLINE === 'true';
+        const useProd = process.env.USE_PROD_DB === 'true';
+
+        const clientConfig: any = {
+            region: process.env.AWS_REGION || 'us-east-1',
+        };
+
+        if (isOffline && !useProd) {
+            // Local development mode
+            console.log(`[DynamoDBService] Connecting to local DynamoDB at ${process.env.DYNAMODB_ENDPOINT || 'http://localhost:8000'}`);
+            clientConfig.endpoint = process.env.DYNAMODB_ENDPOINT || 'http://localhost:8000';
+            clientConfig.credentials = {
                 accessKeyId: 'LOCAL',
                 secretAccessKey: 'LOCAL',
-            },
-        });
+            };
+        } else {
+            // Production or hitting Prod from local
+            if (useProd) {
+                console.log(`[DynamoDBService] Offline mode detected, but USE_PROD_DB is true. Connecting to AWS...`);
+            } else {
+                console.log(`[DynamoDBService] Connecting to AWS DynamoDB in ${clientConfig.region}`);
+            }
+
+            // Note: If running locally without USE_PROD_DB, it falls into the first block.
+            // If running in AWS or locally with USE_PROD_DB, we don't set endpoint or credentials.
+            // The AWS SDK will automatically use environment variables (AWS_ACCESS_KEY_ID, etc.)
+            // or the default credential provider chain.
+        }
+
+        const client = new DynamoDBClient(clientConfig);
         this.docClient = DynamoDBDocumentClient.from(client);
-        this.tableName = tableName;
     }
 
     async put(item: Record<string, any>, conditionExpression?: string) {
